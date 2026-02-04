@@ -1,0 +1,85 @@
+name: kullhi_flutter_base
+description: "Flutter Base Project with Clean Architecture"
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.10.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # State Management
+  get: ^4.6.6
+
+  # Localization
+  easy_localization: ^3.0.7
+
+  # Network
+  dio: ^5.7.0
+  pretty_dio_logger: ^1.4.0
+
+  # Local Storage
+  shared_preferences: ^2.3.3
+
+  # Utils
+  intl: ^0.20.2
+  equatable: ^2.0.5
+  logger: ^2.5.0
+
+  # Icons
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^6.0.0
+
+  # Code Generation
+  build_runner: ^2.4.13
+  flutter_gen_runner: ^5.8.0
+  json_serializable: ^6.9.2
+
+flutter_gen:
+  output: lib/generated/
+  line_length: 80
+
+  integrations:
+    flutter_svg: false
+    rive: false
+    lottie: false
+
+  assets:
+    enabled: true
+    outputs:
+      class_name: Assets
+
+  fonts:
+    enabled: false
+
+  colors:
+    enabled: false
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/icons/
+    - assets/translations/
+
+  # Uncomment and add font files to use custom fonts
+  # fonts:
+  #   - family: Roboto
+  #     fonts:
+  #       - asset: assets/fonts/Roboto-Regular.ttf
+  #         weight: 400
+  #       - asset: assets/fonts/Roboto-Medium.ttf
+  #         weight: 500
+  #       - asset: assets/fonts/Roboto-Bold.ttf
+  #         weight: 700

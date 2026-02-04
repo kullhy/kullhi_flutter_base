@@ -1,0 +1,67 @@
+{
+    "app": {
+        "name": "Kullhi Flutter Base",
+        "description": "Dự án Flutter cơ bản"
+    },
+    "common": {
+        "ok": "OK",
+        "cancel": "Hủy",
+        "confirm": "Xác nhận",
+        "save": "Lưu",
+        "delete": "Xóa",
+        "edit": "Sửa",
+        "close": "Đóng",
+        "back": "Quay lại",
+        "next": "Tiếp theo",
+        "done": "Hoàn tất",
+        "loading": "Đang tải...",
+        "error": "Lỗi",
+        "success": "Thành công",
+        "warning": "Cảnh báo",
+        "info": "Thông tin",
+        "retry": "Thử lại",
+        "yes": "Có",
+        "no": "Không",
+        "search": "Tìm kiếm",
+        "filter": "Lọc",
+        "sort": "Sắp xếp",
+        "refresh": "Làm mới",
+        "noData": "Không có dữ liệu",
+        "somethingWentWrong": "Đã có lỗi xảy ra"
+    },
+    "auth": {
+        "login": "Đăng nhập",
+        "logout": "Đăng xuất",
+        "register": "Đăng ký",
+        "email": "Email",
+        "password": "Mật khẩu",
+        "confirmPassword": "Xác nhận mật khẩu",
+        "forgotPassword": "Quên mật khẩu?",
+        "rememberMe": "Ghi nhớ đăng nhập"
+    },
+    "home": {
+        "title": "Trang chủ",
+        "welcome": "Chào mừng"
+    },
+    "settings": {
+        "title": "Cài đặt",
+        "theme": "Giao diện",
+        "language": "Ngôn ngữ",
+        "darkMode": "Chế độ tối",
+        "lightMode": "Chế độ sáng",
+        "systemMode": "Hệ thống"
+    },
+    "validation": {
+        "required": "Trường này là bắt buộc",
+        "email": "Vui lòng nhập email hợp lệ",
+        "minLength": "Phải có ít nhất {min} ký tự",
+        "maxLength": "Phải có tối đa {max} ký tự",
+        "passwordMismatch": "Mật khẩu không khớp"
+    },
+    "network": {
+        "noInternet": "Không có kết nối internet",
+        "timeout": "Hết thời gian kết nối",
+        "serverError": "Lỗi máy chủ",
+        "unauthorized": "Không có quyền truy cập"
+    }
+}
