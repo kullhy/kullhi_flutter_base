@@ -1,0 +1,9 @@
+name = "iap-verify"
+main = "src/index.ts"
+compatibility_date = "2025-01-01"
+workers_dev = true
+
+[vars]
+# Non-secret values can be stored here. Secrets should be configured via `wrangler secret put`.
+GOOGLE_PLAY_PACKAGE_NAME = "com.example.kullhi_flutter_base"
+APP_BUNDLE_ID = "com.example.kullhiFlutterBase"
