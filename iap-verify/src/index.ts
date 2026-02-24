@@ -16,6 +16,15 @@ interface VerifyRequest {
   transactionReceipt?: string;
 }
 
+class HttpError extends Error {
+  finalStatus: number;
+
+  constructor(message: string, status = 400) {
+    super(message);
+    this.finalStatus = status;
+  }
+}
+
 const GOOGLE_SCOPE = 'https://www.googleapis.com/auth/androidpublisher';
 
 export default {
@@ -47,6 +56,10 @@ export default {
       const result = await verifyIos(env, body.productId, body.transactionReceipt!);
       return withCors(json(result));
     } catch (error) {
+      if (error instanceof HttpError) {
+        return withCors(json({ error: error.message }, error.finalStatus));
+      }
+
       return withCors(
         json(
           {
@@ -59,25 +72,24 @@ export default {
   },
 };
 
-
 function verifyAppSecret(request: Request, env: Env): void {
   const headerSecret = request.headers.get('App-Secret-Key');
-  if (!env.APP_SECRET_KEY || !headerSecret || headerSecret != env.APP_SECRET_KEY) {
-    throw new Error('Unauthorized request');
+  if (!env.APP_SECRET_KEY || !headerSecret || headerSecret !== env.APP_SECRET_KEY) {
+    throw new HttpError('Unauthorized request', 401);
   }
 }
 
 function validateRequest(body: VerifyRequest): void {
   if (!body.platform || !body.productId) {
-    throw new Error('platform and productId are required');
+    throw new HttpError('platform and productId are required');
   }
 
   if (body.platform === 'android' && !body.purchaseToken) {
-    throw new Error('purchaseToken is required for android');
+    throw new HttpError('purchaseToken is required for android');
   }
 
   if (body.platform === 'ios' && !body.transactionReceipt) {
-    throw new Error('transactionReceipt is required for ios');
+    throw new HttpError('transactionReceipt is required for ios');
   }
 }
 
@@ -97,7 +109,7 @@ async function verifyAndroid(env: Env, productId: string, purchaseToken: string)
 
   if (!resp.ok) {
     const raw = await resp.text();
-    throw new Error(`Google verify failed: ${resp.status} ${raw}`);
+    throw new HttpError(`Google verify failed: ${resp.status} ${raw}`);
   }
 
   const data = (await resp.json()) as {
@@ -126,13 +138,12 @@ async function verifyIos(env: Env, productId: string, transactionReceipt: string
 
   let result = await callAppleVerifyReceipt(payload, false);
 
-  // 21007: sandbox receipt sent to production.
   if (result.status === 21007) {
     result = await callAppleVerifyReceipt(payload, true);
   }
 
   if (result.status !== 0) {
-    throw new Error(`Apple verify failed with status ${result.status}`);
+    throw new HttpError(`Apple verify failed with status ${result.status}`);
   }
 
   const latest = [...(result.latest_receipt_info ?? [])]
@@ -165,7 +176,7 @@ async function callAppleVerifyReceipt(
   });
 
   if (!resp.ok) {
-    throw new Error(`Apple endpoint error: ${resp.status}`);
+    throw new HttpError(`Apple endpoint error: ${resp.status}`);
   }
 
   return (await resp.json()) as AppleVerifyReceiptResponse;
@@ -200,7 +211,7 @@ async function createGoogleAccessToken(env: Env): Promise<string> {
 
   if (!tokenResp.ok) {
     const raw = await tokenResp.text();
-    throw new Error(`Google OAuth failed: ${tokenResp.status} ${raw}`);
+    throw new HttpError(`Google OAuth failed: ${tokenResp.status} ${raw}`);
   }
 
   const tokenData = (await tokenResp.json()) as { access_token: string };
@@ -269,7 +280,7 @@ function withCors(response: Response): Response {
   const headers = new Headers(response.headers);
   headers.set('Access-Control-Allow-Origin', '*');
   headers.set('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
-  headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization, App-Secret-Key');
   return new Response(response.body, {
     status: response.status,
     statusText: response.statusText,

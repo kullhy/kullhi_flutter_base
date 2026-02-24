@@ -137,6 +137,11 @@ class IapService extends GetxService {
   }
 
   Future<bool> _verifyPurchase(PurchaseDetails purchase) async {
+    final cloudflareWorkerUrl = dotenv.env['CLOUDFLARE_WORKER_URL'] ?? '';
+    if (cloudflareWorkerUrl.isEmpty) {
+      return false;
+    }
+
     try {
       final isAndroid = purchase is GooglePlayPurchaseDetails;
       final response = await _dioClient.post<Map<String, dynamic>>(
@@ -147,9 +152,7 @@ class IapService extends GetxService {
           if (isAndroid) 'purchaseToken': purchase.verificationData.serverVerificationData,
           if (!isAndroid) 'transactionReceipt': purchase.verificationData.serverVerificationData,
         },
-        options: Options(
-          baseUrl: dotenv.env['CLOUDFLARE_WORKER_URL'] ?? '',
-        ),
+        options: Options(baseUrl: cloudflareWorkerUrl),
       );
       return response.data?['isActive'] == true;
     } catch (_) {

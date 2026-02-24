@@ -44,7 +44,7 @@ npm run deploy
 
 ### `POST /verify`
 
-Request body:
+Request body (include header `App-Secret-Key: <APP_SECRET_KEY>`):
 
 ```json
 {
