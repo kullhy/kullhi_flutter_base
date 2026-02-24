@@ -1,4 +1,4 @@
-.PHONY: help clean get build_runner gen watch analyze format test run ios android init
+.PHONY: help clean get build_runner gen watch analyze format test run ios android init rename deploy_android deploy_ios
 
 help:
 	@echo "Available commands:"
@@ -27,10 +27,13 @@ help:
 	@echo "    make all          - Clean, get deps and generate"
 	@echo ""
 	@echo "  New Project:"
-	@echo "    make init         - Initialize new app from base (interactive)"
+	@echo "    make rename name=qr_ems - Rename package to com.kullhi.<name>"
 	@echo "    make init APP_NAME=\"My App\" PACKAGE_NAME=\"com.example.myapp\" - Initialize with args"
+	@echo ""
+	@echo "  Deployment:"
+	@echo "    make deploy_android - Run Fastlane Android beta lane"
+	@echo "    make deploy_ios     - Run Fastlane iOS beta lane"
 
-# Dependencies
 get:
 	flutter pub get
 
@@ -41,7 +44,6 @@ clean:
 	rm -rf .flutter-plugins
 	rm -rf .flutter-plugins-dependencies
 
-# Code Generation
 gen:
 	dart run build_runner build --delete-conflicting-outputs
 
@@ -54,18 +56,15 @@ gen_assets:
 gen_locale:
 	@echo "Locale files are in assets/translations/"
 
-# Code Quality
 analyze:
 	flutter analyze
 
 format:
 	dart format lib/
 
-# Testing
 test:
 	flutter test
 
-# Running
 run:
 	flutter run
 
@@ -75,7 +74,6 @@ ios:
 android:
 	flutter run -d android
 
-# Building
 build_apk:
 	flutter build apk --release
 
@@ -85,19 +83,14 @@ build_ios:
 build_appbundle:
 	flutter build appbundle --release
 
-# All in one
 all: clean get gen
 	@echo "Project setup complete!"
 
-# Development setup
 setup:
 	flutter pub get
 	dart run build_runner build --delete-conflicting-outputs
 	@echo "Setup complete!"
 
-# Initialize new app from base
-# Usage: make init APP_NAME="My App" PACKAGE_NAME="com.example.myapp"
-# Or just: make init (for interactive mode)
 init:
 ifdef APP_NAME
 ifdef PACKAGE_NAME
@@ -120,5 +113,11 @@ else
 	./scripts/init_app.sh "$$app_name" "$$package_name" "$$bundle_id"
 endif
 
-# Rename app (alias for init)
-rename: init
+rename:
+	dart run change_app_package_name:main com.kullhi.$(name)
+
+deploy_android:
+	cd android && bundle exec fastlane beta
+
+deploy_ios:
+	cd ios && bundle exec fastlane beta

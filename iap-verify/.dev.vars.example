@@ -1,0 +1,7 @@
+# Cloudflare Worker secrets (local development)
+APPLE_SHARED_SECRET=your_apple_shared_secret
+GOOGLE_SERVICE_ACCOUNT_EMAIL=service-account@project.iam.gserviceaccount.com
+GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
+GOOGLE_PLAY_PACKAGE_NAME=com.example.kullhi_flutter_base
+APP_BUNDLE_ID=com.example.kullhiFlutterBase
+APP_SECRET_KEY=replace_with_secure_key

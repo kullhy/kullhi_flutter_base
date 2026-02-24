@@ -1,0 +1,4 @@
+app_identifier(ENV['IOS_APP_IDENTIFIER'] || 'com.example.kullhiFlutterBase')
+apple_id(ENV['APPLE_ID'] || 'dev@example.com')
+itc_team_id(ENV['APPSTORE_TEAM_ID'] || '000000000')
+team_id(ENV['DEVELOPER_TEAM_ID'] || 'XXXXXXXXXX')

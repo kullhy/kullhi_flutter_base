@@ -13,7 +13,7 @@ class PremiumGuard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetX<SubscriptionController>(
+    return GetX<IapService>(
       builder: (controller) {
         if (controller.isPremium.value) {
           return child;

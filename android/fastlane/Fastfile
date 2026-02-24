@@ -1,0 +1,17 @@
+default_platform(:android)
+
+platform :android do
+  desc "Build and upload Android beta"
+  lane :beta do
+    gradle(task: "clean")
+    gradle(task: "bundle", build_type: "Release")
+    upload_to_play_store(
+      track: "internal",
+      aab: "../build/app/outputs/bundle/release/app-release.aab",
+      json_key: ENV["SUPPLY_JSON_KEY"],
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+      skip_upload_metadata: true
+    )
+  end
+end
